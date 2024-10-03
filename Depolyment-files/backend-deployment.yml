@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: shekhar123reddy/techdome_backend:1
+        env:
+        - name: DB
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: DB
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: PORT
+        - name: SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: SECRET
+        - name: CLOUD_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: CLOUD_NAME
+        - name: API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: API_KEY
+        - name: API_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: API_SECRET
+        ports:
+        - containerPort: 5000
+
+      imagePullSecrets:
+      - name: my-docker-registry-secret  # This is the secret created in Step 1
+

@@ -31,6 +31,7 @@ app.use(cors({
     origin: true
 }));
 
+
 //////-----connection with database-----//////
 require("./database/conn");
 

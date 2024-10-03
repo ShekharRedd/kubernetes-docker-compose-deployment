@@ -1,0 +1,26 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: shekhar123reddy/techdome_frontend:1
+        env:
+        - name: REACT_APP_BASE_URL
+          value: "http://localhost:30002/api"
+        ports:
+        - containerPort: 3000
+
+      imagePullSecrets:
+      - name: my-docker-registry-secret  # This is the secret created in Step 1

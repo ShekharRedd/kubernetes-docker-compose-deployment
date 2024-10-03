@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secretpassword
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+    # No ports exposed to the host machine
+
+  backend:
+    image: techdomebackend:1
+    container_name: backend-container
+    environment:
+      - DB=mongodb://admin:secretpassword@mongodb:27017/
+      - PORT=5000
+      - SECRET=dfkjjkjdfnnkdnkjweruiwiurwefnksknfk7777
+      - CLOUD_NAME=mycloudinarycloudname
+      - API_KEY=1234567890
+      - API_SECRET=mysecretapikey123
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+    ports:
+      - "5000:5000" # Only frontend exposed to host on port 3000        
+
+  frontend:
+    image: techdomefrontend:1
+    container_name: frontend-container
+    environment:
+      - REACT_APP_BASE_URL=http://localhost:5000/api
+    ports:
+      - "3000:3000" # Only frontend exposed to host on port 3000
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
