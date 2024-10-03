@@ -281,6 +281,9 @@ spec:
 
 Run the following commands to deploy the application to your Kubernetes cluster:
 
+cd kubernetes-docker-compose-deployment
+
+cd Depolyment-files 
 
 kubectl apply -f mongodb-deployment.yaml
 kubectl apply -f backend-deployment.yaml
